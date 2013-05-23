@@ -1,0 +1,42 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tematd2;
+
+/**
+ *
+ * @author Popescu Eduard 1221F
+ *
+ */
+import java.util.concurrent.BlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Consomateur implements Runnable {
+    
+  private final BlockingQueue sharedQueue;
+    private int i=0;
+
+    public Consumer (BlockingQueue sharedQueue) {
+        this.sharedQueue = sharedQueue;
+    }
+  
+    @Override
+    public void run() {
+ while(true){
+try {
+String personne = (String)sharedQueue.take();
+System.out.println("Consumed: "+ personne);
+ProducerConsumerPattern.writeToFile(personne);
+i++; //linie
+                if (i == tematd2.personnes.size())
+                  tematd2.closeBufferOutput();
+                	
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Consomateur.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }   	
+    }
+    
+}
